@@ -1,12 +1,9 @@
-<html>
-<head>
-	<title>Lyre</title>
-    <link rel="stylesheet" href="../static/simple.css" />
-    <link rel="stylesheet" href="../static/extras.css" />
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-    <div class="container">
+{% extends "layout.html" %}
+{% block title %}A Secret Heart{% endblock %}
+{% block script %}
+        var tubes = ""
+{% endblock %}
+{% block content %}
     		<div class="span6 offset5">
     			<a href="/">
     			<div class="welcome">
@@ -28,6 +25,4 @@
 <!-- 				<p class="centered medium-text">THIS LINK EXPIRES IN <span id="timer">20.01</span> MINUTES</p>
 				<p class="silent centered medium-text">THE CLOCK IS TICKING</p>
  -->			</div>
-    </div>
-</body>
-</html>
+{% endblock %}

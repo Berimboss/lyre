@@ -1,13 +1,18 @@
 <html>
 <head>
-	<title>Lyre</title>
-    <link rel="stylesheet" href="../static/simple.css" />
-    <link rel="stylesheet" href="../static/extras.css" />
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
+	<title>Lyre | {% block title %}{% endblock %}</title>
+	{% assets "css" %}<link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css" />{% endassets %}
 </head>
 <body>
     <div class="container">
     	{% block content %}
+    	{% endblock %}
     </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% assets "js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+<link rel="shortcut icon" href="/static/imgs/favicon.ico" />
+<link href='//fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
+{% block script %}
+{% endblock %}
 </body>
 </html>

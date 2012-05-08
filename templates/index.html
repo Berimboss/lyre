@@ -1,12 +1,20 @@
-<html>
-<head>
-	<title>Lyre</title>
-    <link rel="stylesheet" href="../static/simple.css" />
-    <link rel="stylesheet" href="../static/extras.css" />
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-    <div class="container">
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+{% block script %}
+<script type="text/javascript">
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result, function (index, file) {
+                $('<p/>').text(file.name).appendTo(document.body);
+            });
+        }
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
     		<div class="span6 offset5">
     			<div class="welcome">
     				<p class="muted centered medium-text">THIS IS LYRE</p>
@@ -28,9 +36,7 @@
 					<span class="silent medium-text">TRY IT -----></span>
 				</div>
 				<div class="upload span2 offset1">
-					<input type="file" size="20"/>
+					<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
 				</div>
 			</div>
-    </div>
-</body>
-</html>
+{% endblock %}
