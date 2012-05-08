@@ -1,0 +1,88 @@
+* Extras
+ * Application Specific CSS
+ * ------------------------------------------------------------------------------------------- */
+
+body {
+  	font-family: 'PT Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #373737;
+}
+
+.muted {
+	opacity: 0.5;
+}
+
+.beaten {
+	opacity: 0.8;
+}
+
+.silent {
+	opacity: 0.2;
+}
+
+.welcome {
+	line-height: 5px;
+}
+
+.time {
+	margin-top: 30px;
+}
+
+.centered {
+	text-align: center;
+}
+
+.upload {
+	padding-left: 20px;
+	margin-top: -5px;
+}
+
+.welcome {
+	margin-top: 50px;
+}
+.files {
+	margin-top: 500px;
+}
+.medium-text {
+	font-size: 18px;
+}
+
+.large-text {
+	font-size: 30px;
+}
+
+.huge-text {
+	font-size: 36px;
+}
+.strike {
+	text-decoration: line-through;
+}
+
+.title-image {
+	background-image: url('../static/imgs/title.png');
+	height: 62px;
+	width: 166px;
+	padding: 26px;
+	margin-top: 60px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.lock-image {
+	background-image: url('../static/imgs/lock.png');
+	height: 156px;
+	width: 130px;
+	padding: 40px;
+	margin-top: 35px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.clock-image {
+	background-image: url('../static/imgs/clock.png');
+	height: 156px;
+	width: 130px;
+	padding: 40px;
+	margin-top: 35px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
