@@ -6,37 +6,39 @@ $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
-            $.each(data.result, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
-            });
+            console.log('Started upload')
+            $('<p/>').text(data.result.name).appendTo(document.body);
         }
     });
 });
 </script>
 {% endblock %}
 {% block content %}
-    		<div class="span6 offset5">
-    			<div class="welcome">
-    				<p class="muted centered medium-text">THIS IS LYRE</p>
-    				<p class="silent centered medium-text">PANTS ON FYRE</p>
-    			</div>
-    		</div>
-    		<div class="span6 offset6 top100 title-image">
-    		</div>
-    		<div class="span8 offset4">
-				<div class="welcome">
-					<p class="centered large-text">LYRE IS FOR SHARING MUSIC</p>
-					<p class="beaten centered large-text">FOR A SHORT AMOUNT OF TIME</p>
-					<p class="centered large-text">IF PEOPLE LOVE IT</p>
-					<p class="beaten centered large-text">THE TIME IS EXTENDED</p>
-				</div>
-			</div>
-			<div class="files">
-				<div class="span2 offset3">
-					<span class="silent medium-text">TRY IT -----></span>
-				</div>
-				<div class="upload span2 offset1">
-					<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
-				</div>
-			</div>
+            <div class="row welcome">
+            	<div class="span6 offset5">
+            			<p class="muted centered medium-text">THIS IS LYRE</p>
+            			<p class="silent centered medium-text">PANTS ON FYRE</p>
+            	</div>
+            	<div class="span6 offset6 top100 title-image">
+            	</div>
+            </div>
+            <div class="row welcome">
+            	<div class="span8 offset4">
+            			<p class="centered large-text">LYRE IS FOR SHARING MUSIC</p>
+            			<p class="beaten centered large-text">FOR A SHORT AMOUNT OF TIME</p>
+            			<p class="centered large-text">IF PEOPLE LOVE IT</p>
+            			<p class="beaten centered large-text">THE TIME IS EXTENDED</p>
+            	</div>
+            </div>
+            <div class="row files">
+      		<div class="span2 offset3">
+      			<span class="silent medium-text">TRY IT -----></span>
+      		</div>
+      		<div class="upload span2 offset1">
+                        <span class="upload-button fileinput-button">
+                              <span id="upload-helper" class="centered upload-text">PICK SONG</span>
+            	            <input id="fileupload" type="file" name="file" data-url="/upload">
+                        </span>
+                  </div>
+            </div>
 {% endblock %}

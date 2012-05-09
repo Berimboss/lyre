@@ -1,28 +1,32 @@
 {% extends "layout.html" %}
 {% block title %}A Secret Heart{% endblock %}
 {% block script %}
-        var tubes = ""
+        <script type="text/javascript">
+        var expirationTime = new Date(1336441309611);
+        console.log(expirationTime)
+        $('#timer').countdown({until: expirationTime, compact: true, description: ''});
+        </script>
 {% endblock %}
 {% block content %}
-    		<div class="span6 offset5">
-    			<a href="/">
-    			<div class="welcome">
-    				<p class="muted centered medium-text">THIS IS LYRE</p>
-    				<p class="silent centered medium-text">PANTS ON FYRE</p>
+            <div class="row welcome">
+        		<div class="span6 offset5">
+        			<a href="/">
+        				<p class="muted centered medium-text">THIS IS LYRE</p>
+        				<p class="silent centered medium-text">PANTS ON FYRE</p>
+        			</a>
+        		</div>
+        		<div class="span6 offset6 top100 lock-image">
+        		<!-- <div class="span6 offset6 top100 clock-image"> -->
+        		</div>
+            </div>
+            <div class="row welcome">
+        		<div class="span8 offset4">
+    				<p class="centered huge-text strike"><a href="/download/song">A SECRET HEART - BY FEIST</a></p>
     			</div>
-    			</a>
-    		</div>
-    		<div class="span6 offset6 top100 lock-image">
-    		<!-- <div class="span6 offset6 top100 clock-image"> -->
-    		</div>
-    		<div class="span8 offset4">
-				<div class="welcome">
-					<p class="centered huge-text strike"><a href="/download/song">A SECRET HEART - BY FEIST</a></p>
-				</div>
-			</div>
-			<div class="span6 offset5 time">
-				<p class="centered medium-text">THIS LINK IS EXPIRED, SORRY.</p>
-<!-- 				<p class="centered medium-text">THIS LINK EXPIRES IN <span id="timer">20.01</span> MINUTES</p>
-				<p class="silent centered medium-text">THE CLOCK IS TICKING</p>
- -->			</div>
+    			<div class="span6 offset5 time">
+    				<!-- <p class="centered medium-text">THIS LINK IS EXPIRED, SORRY.</p> -->
+                    <p class="centered medium-text">THIS LINK EXPIRES IN <span id="timer"></span> MINUTES</p>
+    				<p class="silent centered medium-text">THE CLOCK IS TICKING</p>
+        		</div>
+            </div>
 {% endblock %}

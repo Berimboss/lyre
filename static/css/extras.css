@@ -40,7 +40,7 @@ body {
 	margin-top: 50px;
 }
 .files {
-	margin-top: 500px;
+	margin-top: 50px;
 }
 .medium-text {
 	font-size: 18px;
@@ -52,6 +52,10 @@ body {
 
 .huge-text {
 	font-size: 36px;
+}
+
+.upload-text {
+	font-size: 24px;
 }
 .strike {
 	text-decoration: line-through;
@@ -85,4 +89,34 @@ body {
 	margin-top: 35px;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  float: left;
+  margin-right: 4px;
+}
+
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  border: solid transparent;
+  border-width: 0 0 100px 200px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transform: translate(-300px, 0) scale(4);
+  direction: ltr;
+  cursor: pointer;
+}
+
+.upload-button {
+	width: 130px;
+	height: 20px;
+	margin-left: 10px;
+	padding-left: 10px;
+	padding-top: 10px;
+	border: 3px gray solid;
 }
