@@ -52,10 +52,9 @@ def upload():
     if request.method == 'POST':
         data_file = request.files.get('file')
         file_name = data_file.filename
-        print data_file.__dict__
         s3_key.key = data_file.filename
         s3_key.set_contents_from_file(data_file)
-    return jsonify(name=file_name, size=15151, url="\/\/example.org\/files\/picture1.jpg")
+    return jsonify(name=file_name)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.

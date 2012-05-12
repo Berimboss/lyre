@@ -11,6 +11,10 @@ $(function () {
         }
     });
 });
+$('#fileupload').bind('fileuploadprogress', function (e, data) {
+    // Log the current bitrate for this upload:
+    console.log(data.bitrate);
+});
 </script>
 {% endblock %}
 {% block content %}
