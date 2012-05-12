@@ -12,7 +12,7 @@ $(function () {
     });
 });
 $('#fileupload').bind('fileuploadprogress', function (e, data) {
-    var percentage = (100 * Math.round(data.loaded / data.total)) + "%"
+    var percentage = (100 * data.loaded / data.total) + "%"
     $('#progress-bar').animate({width:percentage});
     console.log(percentage);
     if (percentage == "100%") {
