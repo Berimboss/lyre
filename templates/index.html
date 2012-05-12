@@ -6,14 +6,18 @@ $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
-            console.log('Started upload')
+            console.log('Upload complete')
             $('<p/>').text(data.result.name).appendTo(document.body);
         }
     });
 });
 $('#fileupload').bind('fileuploadprogress', function (e, data) {
-    // Log the current bitrate for this upload:
-    console.log(data.bitrate);
+    var percentage = Math.round(100 * (data.loaded / data.total)) + "%"
+    $('#progress-bar').animate({width:percentage});
+    console.log(percentage);
+    if (percentage == "100%") {
+        $('<p/>').text("Monkeys at work").appendTo(document.body);
+    };
 });
 </script>
 {% endblock %}
@@ -33,6 +37,11 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
             			<p class="centered large-text">IF PEOPLE LOVE IT</p>
             			<p class="beaten centered large-text">THE TIME IS EXTENDED</p>
             	</div>
+            </div>
+            <div class="row">
+                <div class="span6 offset5">
+                    <span id="progress-bar">
+                </div>
             </div>
             <div class="row files">
       		<div class="span2 offset3">

@@ -120,3 +120,9 @@ body {
 	padding-top: 10px;
 	border: 3px gray solid;
 }
+
+#progress-bar {
+	background-color: #eb5c0f;
+	width: 0%;
+	height: 12px;
+}
