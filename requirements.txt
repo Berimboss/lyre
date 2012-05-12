@@ -13,3 +13,5 @@ gunicorn
 flask-assets
 cssmin
 jsmin
+mutagen
+boto
