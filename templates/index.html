@@ -12,12 +12,8 @@ $(function () {
     });
 });
 $('#fileupload').bind('fileuploadprogress', function (e, data) {
-    var percentage = (100 * data.loaded / data.total) + "%"
-    $('#progress-bar').animate({width:percentage});
-    console.log(percentage);
-    if (percentage == "100%") {
-        $('<p/>').text("Monkeys at work").appendTo(document.body);
-    };
+    $('#progress-bar').css('width', parseInt(data.loaded / data.total * 100, 10) + '%').end()
+    console.log(parseInt(data.loaded / data.total * 100, 10));
 });
 </script>
 {% endblock %}
@@ -40,14 +36,14 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
             </div>
             <div class="row">
                 <div class="span6 offset5">
-                    <span id="progress-bar">
+                    <div id="progress-bar"></div>
                 </div>
             </div>
             <div class="row files">
-      		<div class="span2 offset3">
-      			<span class="silent medium-text">TRY IT -----></span>
-      		</div>
-      		<div class="upload span2 offset1">
+      		    <div class="span2 offset3">
+      	     		<span class="silent medium-text">TRY IT -----></span>
+          		</div>
+          		<div class="upload span2 offset1">
                         <span class="upload-button fileinput-button">
                               <span id="upload-helper" class="centered upload-text">PICK SONG</span>
             	            <input id="fileupload" type="file" name="file" data-url="/upload">
