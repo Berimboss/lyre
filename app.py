@@ -51,10 +51,10 @@ def song(id):
 def upload():
     if request.method == 'POST':
         data_file = request.files.get('file')
-        file_name = data_file.filename
         s3_key.key = data_file.filename
         s3_key.set_contents_from_file(data_file)
-    return jsonify(name=file_name)
+        url = s3_key.generate_url(1300)
+    return jsonify(name=url)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.

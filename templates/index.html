@@ -4,9 +4,11 @@
 <script type="text/javascript">
 $(function () {
     $('#fileupload').fileupload({
+        dropZone: $('body'),
         dataType: 'json',
         done: function (e, data) {
             $('#upload-helper').text("FINISHED");
+            console.log(data.result.name);
         }
     });
 });
