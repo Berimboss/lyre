@@ -6,12 +6,12 @@ $(function () {
     $('#fileupload').fileupload({
         dataType: 'json',
         done: function (e, data) {
-            console.log('Upload complete')
-            $('<p/>').text(data.result.name).appendTo(document.body);
+            $('#upload-helper').text("FINISHED");
         }
     });
 });
 $('#fileupload').bind('fileuploadprogress', function (e, data) {
+    $('#upload-helper').text("UPLOADING");
     $('#progress-bar').css('width', parseInt(data.loaded / data.total * 100, 10) + '%').end()
     console.log(parseInt(data.loaded / data.total * 100, 10));
 });
@@ -45,7 +45,7 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
           		</div>
           		<div class="upload span2 offset1">
                         <span class="upload-button fileinput-button">
-                              <span id="upload-helper" class="centered upload-text">PICK SONG</span>
+                            <span id="upload-helper" class="centered upload-text">PICK SONG</span>
             	            <input id="fileupload" type="file" name="file" data-url="/upload">
                         </span>
                   </div>

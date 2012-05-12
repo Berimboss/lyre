@@ -57,6 +57,7 @@ body {
 .upload-text {
 	font-size: 24px;
 }
+
 .strike {
 	text-decoration: line-through;
 }
@@ -113,12 +114,12 @@ body {
 }
 
 .upload-button {
-	width: 130px;
+	width: 140px;
 	height: 20px;
-	margin-left: 10px;
-	padding-left: 10px;
+	padding-left: 0px;
 	padding-top: 10px;
 	border: 3px gray solid;
+	text-align: center;
 }
 
 #progress-bar {
