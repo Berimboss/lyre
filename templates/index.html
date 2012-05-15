@@ -8,27 +8,42 @@ $(function () {
         dataType: 'json',
         done: function (e, data) {
             $('#upload-helper').text("FINISHED");
-            console.log(data.result.name);
+            $('#hint').text("TRY AGAIN ----->");
+            $('.finish').css('opacity', "0.5").end()
+            $('#song').text(data.result.name + " BY " + data.result.artist);
+            $('#url').val(data.result.url);
+            $('.show').css('display', 'inline-block').end()
         }
     });
 });
 $('#fileupload').bind('fileuploadprogress', function (e, data) {
+    $('.finish').css('opacity', "1").end()
+    $('.show').css('display', 'none').end()
+    $('#song').text("");
+    $('#url').val("");
     $('#upload-helper').text("UPLOADING");
+    $('#hint').text("HOLD ON ----->");
+    $('.finish-line').css('display', 'inline-block').end()
     $('#progress-bar').css('width', parseInt(data.loaded / data.total * 100, 10) + '%').end()
-    console.log(parseInt(data.loaded / data.total * 100, 10));
+    if ((parseInt(data.loaded / data.total * 100, 10)) == 100) {
+        $('#upload-helper').text("DOIN MAGIC");
+    };
 });
+var expirationTime = new Date() + 1000;
+console.log(expirationTime)
+$('#timer').countdown({until: expirationTime, compact: true, description: ''});
 </script>
 {% endblock %}
 {% block content %}
-            <div class="row welcome">
+            <div id="move" class="row welcome finish">
             	<div class="span6 offset5">
             			<p class="muted centered medium-text">THIS IS LYRE</p>
             			<p class="silent centered medium-text">PANTS ON FYRE</p>
             	</div>
-            	<div class="span6 offset6 top100 title-image">
+            	<div class="span6 offset6 title-image">
             	</div>
             </div>
-            <div class="row welcome">
+            <div class="row welcome finish">
             	<div class="span8 offset4">
             			<p class="centered large-text">LYRE IS FOR SHARING MUSIC</p>
             			<p class="beaten centered large-text">FOR A SHORT AMOUNT OF TIME</p>
@@ -36,20 +51,30 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
             			<p class="beaten centered large-text">THE TIME IS EXTENDED</p>
             	</div>
             </div>
-            <div class="row">
+            <div class="row finish">
                 <div class="span6 offset5">
-                    <div id="progress-bar"></div>
+                    <div id="progress-bar"></div><div class="finish-line"></div>
                 </div>
             </div>
-            <div class="row files">
-      		    <div class="span2 offset3">
-      	     		<span class="silent medium-text">TRY IT -----></span>
+            <div class="row files finish">
+      		    <div class="span3 offset2 hint">
+      	     		<span id="hint" class="silent medium-text">TRY IT -----></span>
           		</div>
           		<div class="upload span2 offset1">
                         <span class="upload-button fileinput-button">
                             <span id="upload-helper" class="centered upload-text">PICK SONG</span>
             	            <input id="fileupload" type="file" name="file" data-url="/upload">
                         </span>
-                  </div>
+                </div>
+            </div>
+            <div class="row files">
+                <span id="song" class="centered span8 offset4 medium-text"></span>
+                <input id="url" class="centered span8 offset4" disabled="true"></span>
+            </div>
+            <div class="row">
+                <div class="span8 offset4 time show">
+                        <p class="centered medium-text">THIS LINK EXPIRES IN <span id="timer"></span> MINUTES</p>
+                        <p class="silent centered medium-text">THE CLOCK IS TICKING</p>
+                </div>
             </div>
 {% endblock %}

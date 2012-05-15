@@ -23,24 +23,24 @@ body {
 	line-height: 5px;
 }
 
-.time {
-	margin-top: 30px;
-}
-
 .centered {
 	text-align: center;
 }
 
+.show {
+	display: none;
+}
 .upload {
-	padding-left: 20px;
+	padding-left: 36px;
 	margin-top: -5px;
 }
 
 .welcome {
-	margin-top: 50px;
+	margin-top: 30px;
 }
+
 .files {
-	margin-top: 50px;
+	margin-top: 40px;
 }
 .medium-text {
 	font-size: 18px;
@@ -62,12 +62,16 @@ body {
 	text-decoration: line-through;
 }
 
+.hint {
+	padding-top: 8px;
+}
+
 .title-image {
 	background-image: url('/static/imgs/title.png');
 	height: 62px;
 	width: 166px;
 	padding: 26px;
-	margin-top: 60px;
+	margin-top: 15px;
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -126,4 +130,35 @@ body {
 	background-color: #eb5c0f;
 	width: 0;
 	height: 12px;
+}
+
+.finish-line {
+	background-image: url("/static/imgs/flag_alt_clear.png");
+	background-repeat: none;
+	float: right;
+	margin-top: -12px;
+	margin-right: -10px;
+	width: 7px;
+	height: 11px;
+	display: none;
+}
+
+#song {
+  text-transform: uppercase;
+}
+
+#url {
+	padding-top: 10px;
+	border: none;
+	font-size: 14px;
+	font-family: 'Monaco', 'Andale Mono', 'Courier New', monospace;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
 }

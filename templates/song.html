@@ -2,7 +2,7 @@
 {% block title %}A Secret Heart{% endblock %}
 {% block script %}
         <script type="text/javascript">
-        var expirationTime = new Date(1336441309611);
+        var expirationTime = new Date() + 1000;
         console.log(expirationTime)
         $('#timer').countdown({until: expirationTime, compact: true, description: ''});
         </script>
