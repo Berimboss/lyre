@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Lyre | {% block title %}{% endblock %}</title>
-	<link href='/static/fonts.css' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
 	{% assets "css" %}<link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css" />{% endassets %}
 </head>
 <body>
@@ -9,7 +9,7 @@
     	{% block content %}
     	{% endblock %}
     </div>
-<script src="/static/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 {% assets "js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 <link rel="shortcut icon" href="/static/imgs/favicon.ico" />
 {% block script %}
