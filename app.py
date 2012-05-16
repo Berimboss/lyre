@@ -42,22 +42,25 @@ class Song(db.Model):
     expires = db.Column(db.DateTime, default=(datetime.datetime.utcnow() + datetime.timedelta(hours=6)), index=True)
     artist = db.Column(db.String(200), index=True)
     title = db.Column(db.String(200), index=True)
-    short = db.Column(db.String(8), index=True, default=str(short_url.encode_url(id)))
+    filename = db.Column(db.String(255), index=True)
     downloads = db.Column(db.Integer, default=0, index=True)
+
+def set_session(short):
+    session['human'] = short
 
 def save_file(data_file):
     filename = secure_filename(data_file.filename)
     mp3 = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     data_file.save(mp3)
-    return mp3
+    return mp3, data_file.filename
 
 def get_tags(data_file):
-    mp3 = save_file(data_file)
+    mp3, filename = save_file(data_file)
     tags = EasyID3(mp3)
-    return tags
+    return tags, filename
 
-def generate_s3(audio_file):
-    s3_key.key = audio_file
+def generate_s3(filename):
+    s3_key.key = filename
     url = s3_key.generate_url(1300)
     return url
 
@@ -68,25 +71,49 @@ def post_s3(data_file):
     url = s3_key.generate_url(1300)
     return url
 
+def get_url(id):
+    short = short_url.encode_url(id)
+    url = "http://%s/%s" % (app.config['SERVER_NAME'], short)
+    return url
+
+@cache.memoize(5000)
+def lookup_song(short):
+    try:
+        id = short_url.decode_url(short)
+    except ValueError:
+        abort(404)
+    song = Song.query.filter_by(id=id).first_or_404()
+    return song
+
 @app.route('/')
 def index():
 	return render_template('index.html')
 
 @app.route('/<short>')
 def song(short):
-    song = Song.query.filter_by(short=short).first_or_404()
+    song = lookup_song(short)
     print song.id, song.artist, song.title
-    return render_template('song.html')
+    set_session(short)
+    return render_template('song.html', song=song, short=short)
+
+@app.route('/<short>/download')
+def download(short):
+    if session.get('human') != short:
+        abort(403)
+    song = lookup_song(short)
+    url = generate_s3(song.filename)
+    return redirect(url)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         data_file = request.files.get('file')
-        tags = get_tags(data_file)
+        tags, filename = get_tags(data_file)
         url = post_s3(data_file)
-        song = Song(artist=str(tags.get('artist')), title=str(tags.get('title')))
+        song = Song(artist=str(tags['artist'][0]), title=str(tags['title'][0]), filename=filename)
         db.session.add(song)
         db.session.commit()
+        url = get_url(song.id)
     return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url)
 
 @app.route('/favicon.ico')

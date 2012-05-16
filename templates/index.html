@@ -20,6 +20,7 @@ $(function () {
             $('#song').text(data.result.name);
             $('#artist').text("- " + data.result.artist);
             $('#url').val(data.result.url);
+            $('#songpage').attr('href', data.result.url)
             $('.show').css('display', 'inline-block').end()
         }
     });
@@ -78,7 +79,7 @@ $('#timer').countdown({until: expirationTime, compact: true, description: ''});
             </div>
             <div class="row files">
                 <div class="span12 offset2">
-                    <p class="centered huge-text"><a href="/download/song"><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
+                    <p class="centered huge-text"><a id="songpage" href=""><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
                 </div>
                 <input id="url" class="centered span8 offset4" disabled="true"></span>
             </div>
