@@ -7,6 +7,12 @@ body {
 	color: #373737;
 }
 
+.time {
+	margin-top: 100px;
+	position:fixed;
+	bottom:3px;
+}
+
 .muted {
 	opacity: 0.5;
 }
@@ -132,6 +138,10 @@ body {
 	height: 12px;
 }
 
+.orange {
+	color: #eb5c0f;
+}
+
 .finish-line {
 	background-image: url("/static/imgs/flag_alt_clear.png");
 	background-repeat: none;
@@ -143,7 +153,7 @@ body {
 	display: none;
 }
 
-#song {
+.upper {
   text-transform: uppercase;
 }
 

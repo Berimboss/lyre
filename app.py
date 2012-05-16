@@ -60,6 +60,7 @@ def post_s3(data_file):
     s3_key.key = data_file.filename
     s3_key.set_contents_from_file(data_file, headers)
     url = s3_key.generate_url(1300)
+    url = "http://lyre.me/tqjET"
     return url
 
 @app.route('/')
@@ -81,7 +82,7 @@ def upload():
         song = Song(artist=str(tags.get('artist')), title=str(tags.get('title')))
         db.session.add(song)
         db.session.commit()
-    return jsonify(artists=tags.get('artist'), name=tags.get('title'), url=url)
+    return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.

@@ -2,6 +2,13 @@
 {% block title %}Welcome{% endblock %}
 {% block script %}
 <script type="text/javascript">
+function hideTitle() {
+    $('.hideonclick').css('display', "none").end();
+}
+$("#fileupload").on("click", hideTitle);
+$(document).bind('drop dragover', function (e) {
+    $('.hideonclick').css('display', "none").end();
+});
 $(function () {
     $('#fileupload').fileupload({
         dropZone: $('body'),
@@ -10,7 +17,8 @@ $(function () {
             $('#upload-helper').text("FINISHED");
             $('#hint').text("TRY AGAIN ----->");
             $('.finish').css('opacity', "0.5").end()
-            $('#song').text(data.result.name + " BY " + data.result.artist);
+            $('#song').text(data.result.name);
+            $('#artist').text("- " + data.result.artist);
             $('#url').val(data.result.url);
             $('.show').css('display', 'inline-block').end()
         }
@@ -20,6 +28,7 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
     $('.finish').css('opacity', "1").end()
     $('.show').css('display', 'none').end()
     $('#song').text("");
+    $('#artist').text("");
     $('#url').val("");
     $('#upload-helper').text("UPLOADING");
     $('#hint').text("HOLD ON ----->");
@@ -35,15 +44,15 @@ $('#timer').countdown({until: expirationTime, compact: true, description: ''});
 </script>
 {% endblock %}
 {% block content %}
-            <div id="move" class="row welcome finish">
-            	<div class="span6 offset5">
+            <div class="row welcome finish">
+            	<div class="span6 offset5 hideonclick">
             			<p class="muted centered medium-text">THIS IS LYRE</p>
             			<p class="silent centered medium-text">PANTS ON FYRE</p>
             	</div>
             	<div class="span6 offset6 title-image">
             	</div>
             </div>
-            <div class="row welcome finish">
+            <div class="row welcome finish hideonclick">
             	<div class="span8 offset4">
             			<p class="centered large-text">LYRE IS FOR SHARING MUSIC</p>
             			<p class="beaten centered large-text">FOR A SHORT AMOUNT OF TIME</p>
@@ -68,12 +77,14 @@ $('#timer').countdown({until: expirationTime, compact: true, description: ''});
                 </div>
             </div>
             <div class="row files">
-                <span id="song" class="centered span8 offset4 medium-text"></span>
+                <div class="span12 offset2">
+                    <p class="centered huge-text"><a href="/download/song"><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
+                </div>
                 <input id="url" class="centered span8 offset4" disabled="true"></span>
             </div>
             <div class="row">
                 <div class="span8 offset4 time show">
-                        <p class="centered medium-text">THIS LINK EXPIRES IN <span id="timer"></span> MINUTES</p>
+                        <p class="centered medium-text">THIS <span class="orange">LINK EXPIRES</span> IN <span id="timer"></span> MINUTES</p>
                         <p class="silent centered medium-text">THE CLOCK IS TICKING</p>
                 </div>
             </div>
