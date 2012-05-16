@@ -42,7 +42,7 @@ class Song(db.Model):
     expires = db.Column(db.DateTime, default=(datetime.datetime.utcnow() + datetime.timedelta(hours=6)), index=True)
     artist = db.Column(db.String(200), index=True)
     title = db.Column(db.String(200), index=True)
-    short = db.Column(db.String(8), index=True, default=short_url.encode_url(id))
+    short = db.Column(db.String(8), index=True, default=str(short_url.encode_url(id)))
     downloads = db.Column(db.Integer, default=0, index=True)
 
 def save_file(data_file):
