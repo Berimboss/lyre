@@ -1,7 +1,7 @@
 import boto
 import os
 import datetime
-# import short_url
+import short_url
 from subprocess import call
 from flask import Flask, request, redirect, url_for, session, flash, render_template, abort, jsonify
 from flaskext.sqlalchemy import SQLAlchemy
@@ -42,8 +42,8 @@ class Song(db.Model):
     expires = db.Column(db.DateTime, default=(datetime.datetime.utcnow() + datetime.timedelta(hours=6)), index=True)
     artist = db.Column(db.String(200), index=True)
     title = db.Column(db.String(200), index=True)
+    short = db.Column(db.String(8), index=True, default=short_url.encode_url(id))
     downloads = db.Column(db.Integer, default=0, index=True)
-
 
 def save_file(data_file):
     filename = secure_filename(data_file.filename)
@@ -66,17 +66,16 @@ def post_s3(data_file):
     s3_key.key = data_file.filename
     s3_key.set_contents_from_file(data_file, headers)
     url = s3_key.generate_url(1300)
-    url = "http://lyre.me/tqjET"
     return url
 
 @app.route('/')
 def index():
 	return render_template('index.html')
 
-@app.route('/<id>')
-def song(id):
-    song = Song.query.filter_by(id=id).first_or_404()
-    print song.id
+@app.route('/<short>')
+def song(short):
+    song = Song.query.filter_by(short=short).first_or_404()
+    print song.id, song.artist, song.title
     return render_template('song.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -89,6 +88,10 @@ def upload():
         db.session.add(song)
         db.session.commit()
     return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url)
+
+@app.route('/favicon.ico')
+def favicon():
+    return redirect('/static/imgs/favicon.ico')
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
