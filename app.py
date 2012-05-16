@@ -18,14 +18,15 @@ db = SQLAlchemy(app)
 cache = Cache(app)
 assets = Environment(app)
 conn = boto.connect_s3(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_ACCESS_KEY'])
-s3_bucket = conn.create_bucket(app.config['S3_BUCKET'])
+s3_bucket = conn.get_bucket(app.config['S3_BUCKET'])
 s3_key = Key(s3_bucket)
 
 filename = "files/"
 dir = os.path.dirname(filename)
 
 if not os.path.exists(dir):
-    os.makedirs(dir)
+    try: os.makedirs(dir)
+    except: pass
 
 assets.register('css',
                 'css/simple.css', 'css/extras.css',
