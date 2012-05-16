@@ -21,6 +21,12 @@ conn = boto.connect_s3(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_A
 s3_bucket = conn.create_bucket(app.config['S3_BUCKET'])
 s3_key = Key(s3_bucket)
 
+filename = "files/"
+dir = os.path.dirname(filename)
+
+if not os.path.exists(dir):
+    os.makedirs(dir)
+
 assets.register('css',
                 'css/simple.css', 'css/extras.css',
                 output='assetcache/cached.css', filters='cssmin')
