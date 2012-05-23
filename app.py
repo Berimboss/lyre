@@ -21,6 +21,17 @@ conn = boto.connect_s3(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_A
 s3_bucket = conn.get_bucket(app.config['S3_BUCKET'])
 s3_key = Key(s3_bucket)
 
+
+# Jinja custom filters
+def datetimef(value):
+    # try:
+    value = value - datetime.timedelta(days=30)
+    return value.strftime('%Y, %m, %d, %H, %M, %S')
+    # except:
+    #     return value
+
+app.jinja_env.filters['iso'] = datetimef
+
 filename = "files/"
 dir = os.path.dirname(filename)
 
@@ -77,7 +88,7 @@ def get_url(id):
     url = "http://%s/%s" % (app.config['SERVER_NAME'], short)
     return url
 
-@cache.memoize(5000)
+@cache.memoize(1)
 def lookup_song(short):
     try:
         id = short_url.decode_url(short)
@@ -100,7 +111,7 @@ def song(short):
 @app.route('/<short>/download')
 def download(short):
     if session.get('human') != short:
-        abort(403)
+        return redirect('/%s' % short)
     song = lookup_song(short)
     url = generate_s3(song.filename)
     return redirect(url)

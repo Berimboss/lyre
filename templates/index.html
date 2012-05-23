@@ -39,9 +39,6 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
         $('#upload-helper').text("DOIN MAGIC");
     };
 });
-var expirationTime = new Date() + 1000;
-console.log(expirationTime)
-$('#timer').countdown({until: expirationTime, compact: true, description: ''});
 </script>
 {% endblock %}
 {% block content %}
@@ -79,14 +76,8 @@ $('#timer').countdown({until: expirationTime, compact: true, description: ''});
             </div>
             <div class="row files">
                 <div class="span12 offset2">
-                    <p class="centered huge-text"><a id="songpage" href=""><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
+                    <p class="centered medium-text"><a id="songpage" href=""><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
                 </div>
                 <input id="url" class="centered span8 offset4" disabled="true"></span>
-            </div>
-            <div class="row">
-                <div class="span8 offset4 time show">
-                        <p class="centered medium-text">THIS <span class="orange">LINK EXPIRES</span> IN <span id="timer"></span> MINUTES</p>
-                        <p class="silent centered medium-text">THE CLOCK IS TICKING</p>
-                </div>
             </div>
 {% endblock %}

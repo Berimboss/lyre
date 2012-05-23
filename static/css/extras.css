@@ -13,6 +13,10 @@ body {
 	bottom:3px;
 }
 
+.bold {
+	color: #373737;
+}
+
 .muted {
 	opacity: 0.5;
 }
