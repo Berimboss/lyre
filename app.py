@@ -66,20 +66,19 @@ def save_file(data_file):
     data_file.save(mp3)
     return mp3, data_file.filename
 
-def get_tags(data_file):
-    mp3, filename = save_file(data_file)
+def get_tags(mp3):
     tags = EasyID3(mp3)
-    return tags, filename
+    return tags
 
 def generate_s3(filename):
     s3_key.key = filename
     url = s3_key.generate_url(1300)
     return url
 
-def post_s3(data_file):
+def post_s3(mp3, filename):
     headers = {'Content-Disposition': 'attachment'}
-    s3_key.key = data_file.filename
-    s3_key.set_contents_from_file(data_file, headers)
+    s3_key.key = filename
+    s3_key.set_contents_from_filename(mp3, headers)
     url = s3_key.generate_url(1300)
     return url
 
@@ -120,8 +119,9 @@ def download(short):
 def upload():
     if request.method == 'POST':
         data_file = request.files.get('file')
-        tags, filename = get_tags(data_file)
-        url = post_s3(data_file)
+        mp3, filename = save_file(data_file)
+        url = post_s3(mp3, filename)
+        tags = get_tags(mp3)
         song = Song(artist=str(tags['artist'][0]), title=str(tags['title'][0]), filename=filename)
         db.session.add(song)
         db.session.commit()
