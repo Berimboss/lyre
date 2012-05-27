@@ -21,7 +21,6 @@ conn = boto.connect_s3(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_A
 s3_bucket = conn.get_bucket(app.config['S3_BUCKET'])
 s3_key = Key(s3_bucket)
 
-
 # Jinja custom filters
 def datetimef(value):
     value = value - datetime.timedelta(days=30)
@@ -46,7 +45,7 @@ assets.register('css',
 
 assets.register('js',
                 'js/jquery.ui.widget.js', 'js/jquery.iframe-transport.js', 'js/jquery.fileupload.js', 'js/jquery.countdown.js',
-                output='assetcache/cached.js', filters='jsmin')
+                'js/app.js', output='assetcache/cached.js', filters='jsmin')
 
 def get_time_delta():
     return datetime.datetime.utcnow() + datetime.timedelta(hours=10)
@@ -74,6 +73,7 @@ def get_tags(mp3):
     tags = EasyID3(mp3)
     return tags
 
+@cache.memoize(100000)
 def generate_s3(filename):
     s3_key.key = filename
     url = s3_key.generate_url(1300)
@@ -108,7 +108,6 @@ def index():
 @app.route('/<short>')
 def song(short):
     song = lookup_song(short)
-    print song.id, song.artist, song.title
     set_session(short)
     return render_template('song.html', song=song, short=short)
 

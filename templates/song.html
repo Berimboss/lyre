@@ -3,21 +3,6 @@
 {% block script %}
         <script>
         expirationDate = new Date(Date.UTC({{ song.expires|jsdatetime }}))
-        $(function() {
-        $('span#timer').countdown(expirationDate, function(event) {
-            $this = $(this);
-            switch(event.type) {
-              case "seconds":
-              case "minutes":
-              case "hours":
-                $this.find('span#'+event.type).html(event.value);
-                break;
-              case "finished":
-                $this.fadeTo('slow', .5);
-                break;
-            }
-          });
-        });
         </script>
 {% endblock %}
 {% block content %}

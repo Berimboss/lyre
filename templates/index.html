@@ -1,53 +1,5 @@
 {% extends "layout.html" %}
 {% block title %}Welcome{% endblock %}
-{% block script %}
-<script type="text/javascript">
-function hideTitle() {
-    $('.hideonclick').css('display', "none").end();
-}
-$("#fileupload").on("click", hideTitle);
-$(document).bind('drop dragover', function (e) {
-    $('.hideonclick').css('display', "none").end();
-});
-$(function () {
-    $('#fileupload').fileupload({
-        dropZone: $('body'),
-        dataType: 'json',
-        done: function (e, data) {
-            if (data.result.error != '') {
-                $('#error').text(data.result.error);
-                $('#upload-helper').text("ERROR");
-                $('#hint').text("WHOOPS ----->");
-            }
-            if (data.result.artist != null) {
-                $('#upload-helper').text("FINISHED");
-                $('#hint').text("TRY AGAIN ----->");
-                $('.finish').css('opacity', "0.5").end()
-                $('#song').text(data.result.name);
-                $('#artist').text("- " + data.result.artist);
-                $('#url').val(data.result.url);
-                $('#songpage').attr('href', data.result.url)
-                $('.show').css('display', 'inline-block').end()
-            }
-        }
-    });
-});
-$('#fileupload').bind('fileuploadprogress', function (e, data) {
-    $('.finish').css('opacity', "1").end()
-    $('.show').css('display', 'none').end()
-    $('#song').text("");
-    $('#artist').text("");
-    $('#url').val("");
-    $('#upload-helper').text("UPLOADING");
-    $('#hint').text("HOLD ON ----->");
-    $('.finish-line').css('display', 'inline-block').end()
-    $('#progress-bar').css('width', parseInt(data.loaded / data.total * 100, 10) + '%').end()
-    if ((parseInt(data.loaded / data.total * 100, 10)) == 100) {
-        $('#upload-helper').text("DOIN MAGIC");
-    };
-});
-</script>
-{% endblock %}
 {% block content %}
             <div class="row welcome finish">
             	<div class="span6 offset5 hideonclick">
@@ -84,6 +36,7 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
                 <div class="span12 offset2">
                     <p class="centered medium-text"><a id="songpage" href=""><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
                 </div>
-                <input id="url" class="centered span8 offset4" disabled="true"></span>
+                <span id="url" class="centered span8 offset4"></span>
+                <span class="centered span8 offset4"><a id="tweet" href=""></a></span>
             </div>
 {% endblock %}
