@@ -44,11 +44,14 @@ assets.register('js',
                 'js/jquery.ui.widget.js', 'js/jquery.iframe-transport.js', 'js/jquery.fileupload.js', 'js/jquery.countdown.js',
                 output='assetcache/cached.js', filters='jsmin')
 
+def get_time_delta():
+    return datetime.datetime.utcnow() + datetime.timedelta(hours=6)
+
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
-    modified = db.Column(db.DateTime, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow(), index=True)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow(), index=True)
-    expires = db.Column(db.DateTime, default=(datetime.datetime.utcnow() + datetime.timedelta(hours=6)), index=True)
+    modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, index=True)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, index=True)
+    expires = db.Column(db.DateTime, default=get_time_delta, index=True)
     artist = db.Column(db.String(200), index=True)
     title = db.Column(db.String(200), index=True)
     filename = db.Column(db.String(255), index=True)
@@ -84,7 +87,7 @@ def get_url(id):
     url = "http://%s/%s" % (app.config['SERVER_NAME'], short)
     return url
 
-@cache.memoize(1)
+@cache.memoize(100000)
 def lookup_song(short):
     try:
         id = short_url.decode_url(short)
@@ -94,6 +97,7 @@ def lookup_song(short):
     return song
 
 @app.route('/')
+@cache.memoize(100000)
 def index():
 	return render_template('index.html')
 
