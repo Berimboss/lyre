@@ -24,13 +24,10 @@ s3_key = Key(s3_bucket)
 
 # Jinja custom filters
 def datetimef(value):
-    # try:
     value = value - datetime.timedelta(days=30)
     return value.strftime('%Y, %m, %d, %H, %M, %S')
-    # except:
-    #     return value
 
-app.jinja_env.filters['iso'] = datetimef
+app.jinja_env.filters['jsdatetime'] = datetimef
 
 filename = "files/"
 dir = os.path.dirname(filename)
@@ -44,7 +41,7 @@ assets.register('css',
                 output='assetcache/cached.css', filters='cssmin')
 
 assets.register('js',
-                'js/jquery.ui.widget.js', 'js/jquery.iframe-transport.js', 'js/jquery.fileupload.js', 'js/jquery.countdown.min.js',
+                'js/jquery.ui.widget.js', 'js/jquery.iframe-transport.js', 'js/jquery.fileupload.js', 'js/jquery.countdown.js',
                 output='assetcache/cached.js', filters='jsmin')
 
 class Song(db.Model):
