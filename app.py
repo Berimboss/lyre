@@ -29,6 +29,10 @@ def datetimef(value):
 
 app.jinja_env.filters['jsdatetime'] = datetimef
 
+@app.context_processor
+def datetime_now():
+    return dict(utcnow=datetime.datetime.utcnow())
+
 filename = "files/"
 dir = os.path.dirname(filename)
 
@@ -45,7 +49,7 @@ assets.register('js',
                 output='assetcache/cached.js', filters='jsmin')
 
 def get_time_delta():
-    return datetime.datetime.utcnow() + datetime.timedelta(hours=6)
+    return datetime.datetime.utcnow() + datetime.timedelta(hours=10)
 
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -97,7 +101,7 @@ def lookup_song(short):
     return song
 
 @app.route('/')
-@cache.memoize(100000)
+@cache.memoize(1000)
 def index():
 	return render_template('index.html')
 
@@ -113,21 +117,28 @@ def download(short):
     if session.get('human') != short:
         return redirect('/%s' % short)
     song = lookup_song(short)
+    if song.expires <= datetime.datetime.utcnow():
+        return redirect('/%s' % short)
     url = generate_s3(song.filename)
     return redirect(url)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
+        error = ''
         data_file = request.files.get('file')
         mp3, filename = save_file(data_file)
         url = post_s3(mp3, filename)
-        tags = get_tags(mp3)
+        try:
+            tags = get_tags(mp3)
+        except:
+            error = 'It looks like the mp3 you\'re uploading doesn\'t have proper ID3 tags, or it\'s not an mp3 at all.'
+            return jsonify(error=error)
         song = Song(artist=str(tags['artist'][0]), title=str(tags['title'][0]), filename=filename)
         db.session.add(song)
         db.session.commit()
         url = get_url(song.id)
-    return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url)
+    return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url, error=error)
 
 @app.route('/favicon.ico')
 def favicon():

@@ -106,6 +106,12 @@ body {
 	background-position: center;
 }
 
+.error-red {
+	list-style: none;
+	color: red;
+	margin-top: 10px;
+}
+
 .fileinput-button {
   position: relative;
   overflow: hidden;

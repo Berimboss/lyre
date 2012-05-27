@@ -14,14 +14,21 @@ $(function () {
         dropZone: $('body'),
         dataType: 'json',
         done: function (e, data) {
-            $('#upload-helper').text("FINISHED");
-            $('#hint').text("TRY AGAIN ----->");
-            $('.finish').css('opacity', "0.5").end()
-            $('#song').text(data.result.name);
-            $('#artist').text("- " + data.result.artist);
-            $('#url').val(data.result.url);
-            $('#songpage').attr('href', data.result.url)
-            $('.show').css('display', 'inline-block').end()
+            if (data.result.error != '') {
+                $('#error').text(data.result.error);
+                $('#upload-helper').text("ERROR");
+                $('#hint').text("WHOOPS ----->");
+            }
+            if (data.result.artist != null) {
+                $('#upload-helper').text("FINISHED");
+                $('#hint').text("TRY AGAIN ----->");
+                $('.finish').css('opacity', "0.5").end()
+                $('#song').text(data.result.name);
+                $('#artist').text("- " + data.result.artist);
+                $('#url').val(data.result.url);
+                $('#songpage').attr('href', data.result.url)
+                $('.show').css('display', 'inline-block').end()
+            }
         }
     });
 });
@@ -54,8 +61,6 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
             	<div class="span8 offset4">
             			<p class="centered large-text">LYRE IS FOR SHARING MUSIC</p>
             			<p class="beaten centered large-text">FOR A SHORT AMOUNT OF TIME</p>
-            			<p class="centered large-text">IF PEOPLE LOVE IT</p>
-            			<p class="beaten centered large-text">THE TIME IS EXTENDED</p>
             	</div>
             </div>
             <div class="row finish">
@@ -75,6 +80,7 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
                 </div>
             </div>
             <div class="row files">
+            <div id="error" class="medium-text centered error-red"></div>
                 <div class="span12 offset2">
                     <p class="centered medium-text"><a id="songpage" href=""><span class="upper" id="song"></span> <span class="upper" id="artist"></span></a></p>
                 </div>

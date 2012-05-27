@@ -28,21 +28,29 @@
         				<p class="silent centered medium-text">PANTS ON FYRE</p>
         			</a>
         		</div>
-        		<div class="span6 offset6 top100 lock-image">
-        		<!-- <div class="span6 offset6 top100 clock-image"> -->
+        		<div class="span6 offset6 top100 {% if song.expires <= utcnow %}lock{% else %}clock{% endif %}-image">
         		</div>
             </div>
             <div class="row welcome">
-        		<div class="span8 offset4">
-    				<p class="centered medium-text"><a href="{{ short }}/download">{{ song.title }} - by {{ song.artist }}</a></p>
+        		<div class="span16">
+    				<p class="centered medium-text">
+                        {% if song.expires <= utcnow %}
+                        {{ song.title }} by {{ song.artist }}
+                        {% else %}
+                        <a href="{{ short }}/download">{{ song.title }} <span class="orange">by</span> {{ song.artist }} <span class="silent">&#9660;</span></p></a>
+                        {% endif %}
+                    </p>
     			</div>
     			<div class="span6 offset5 time">
-    				<!-- <p class="centered medium-text">THIS LINK IS EXPIRED, SORRY.</p> -->
+                    {% if song.expires <= utcnow %}
+    				<p class="centered medium-text">THIS LINK IS EXPIRED, SORRY.</p>
+                    {% else %}
                     <p class="centered medium-text">THIS LINK EXPIRES IN
                         <span id="timer" class="orange">
                             <span id="hours"></span>:<span id="minutes"></span>:<span id="seconds"></span>
                     </p>
     				<p class="silent centered medium-text">THE CLOCK IS TICKING</p>
+                    {% endif %}
         		</div>
             </div>
 {% endblock %}
