@@ -16,6 +16,7 @@ $(function () {
                 $('#hint').text("WHOOPS ----->");
             }
             if (data.result.artist != null) {
+                $('#error').text("");
                 $('#upload-helper').text("FINISHED");
                 $('#hint').text("TRY AGAIN ----->");
                 $('.finish').css('opacity', "0.5").end()
