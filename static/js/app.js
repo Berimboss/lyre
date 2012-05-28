@@ -16,7 +16,6 @@ $(function () {
                 $('#hint').text("WHOOPS ----->");
             }
             if (data.result.artist != null) {
-                $('#error').text("");
                 $('#upload-helper').text("FINISHED");
                 $('#hint').text("TRY AGAIN ----->");
                 $('.finish').css('opacity', "0.5").end()
@@ -39,6 +38,7 @@ $('#fileupload').bind('fileuploadprogress', function (e, data) {
     $('#artist').text("");
     $('#url').text("");
     $('#tweet').text("");
+    $('#error').text("");
     $('#upload-helper').text("UPLOADING");
     $('#hint').text("HOLD ON ----->");
     $('.finish-line').css('display', 'inline-block').end()
