@@ -88,7 +88,7 @@ def post_s3(mp3, filename):
 
 def get_url(id):
     short = short_url.encode_url(id)
-    url = "http://%s/%s" % (app.config['SERVER_NAME'], short)
+    url = "http://%s/%s" % (app.config['PRETTY_SERVER_NAME'], short)
     return url
 
 @cache.memoize(100000)
