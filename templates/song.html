@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}A Secret Heart{% endblock %}
+{% block title %}{{ song.title }} by {{ song.artist }}{% endblock %}
 {% block script %}
         <script>
         expirationDate = new Date(Date.UTC({{ song.expires|jsdatetime }}))
