@@ -127,12 +127,12 @@ def upload():
         error = ''
         data_file = request.files.get('file')
         mp3, filename = save_file(data_file)
-        url = post_s3(mp3, filename)
         try:
             tags = get_tags(mp3)
         except:
             error = 'It looks like the mp3 you\'re uploading doesn\'t have proper ID3 tags, or it\'s not an mp3 at all.'
             return jsonify(error=error)
+        url = post_s3(mp3, filename)
         song = Song(artist=str(tags['artist'][0]), title=str(tags['title'][0]), filename=filename)
         db.session.add(song)
         db.session.commit()
