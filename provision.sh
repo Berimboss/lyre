@@ -1,27 +1,43 @@
-## update apt-get
+#!/bin/bash
+
+# Update apt
 apt-get update
-## Need easy_install, pip
-apt-get install -y python-setuptools
-## Need this for a reason unknown to me
-apt-get install -y libpq-dev python-dev
-## git pip to git goods!
+
+# Install packages we need:
+#
+#   - python-setuptools: to easy_install pip
+#   - python-dev: development headers so we can compile python C extensions
+#   - libpq-dv: PostgreSQL client library headers so we can compile
+#       psycopg
+#   - libevent-dev: ?
+#   - git-core: So we can work with git!
+#   - curl: Useful debugging tool
+#   - pep8, pyflakes: Useful dev tools for Python
+#   - make: Everything needs make.
+#   - htop: Useful ops tool.
+#   - ruby1.9.3: Ruby 1.9!
+apt-get install -y \
+  python-setuptools \
+  python-dev \
+  libpq-dev \
+  libevent-dev \
+  git-core \
+  curl \
+  pep8 \
+  pyflakes \
+  make \
+  htop \
+  ruby1.9.3
+
+# Install pip because easy_install is just garbage
 easy_install pip
-# memecache
-apt-get install -y python-memcache
-apt-get install -y memcache
-# libevent
-apt-get install -y libevent-dev
-## ruby support
-apt-get install -y ruby-full
-## get git for pip via git
-apt-get install git-core
-## Ruby gems
-wget http://production.cf.rubygems.org/rubygems/rubygems-1.8.17.tgz
-tar -zxvf rubygems-1.8.17.tgz
-ruby rubygems-1.8.17/setup.rb
-rm rubygems-1.8.17.tgz
-rm -rf rubygems-1.8.17/
-## Screw old rubygems
-mv /usr/bin/gem1.8 /usr/bin/gem
-## foreman
+
+## Foreman
 gem install foreman --no-ri --no-rdoc
+
+# DONE!
+echo "
+
+Provisioning Complete. CTRL+C if this shows for more than a few seconds...
+
+"

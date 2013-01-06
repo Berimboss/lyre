@@ -2,42 +2,59 @@ import boto
 import os
 import datetime
 import short_url
-from subprocess import call
-from flask import Flask, request, redirect, url_for, session, flash, render_template, abort, jsonify
+from flask import Flask, request, redirect, session, render_template, abort, jsonify
 from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.cache import Cache
-from flaskext.wtf import Form, TextField
-from flask.ext.assets import Environment, Bundle
+from flask.ext.assets import Environment
 from werkzeug import secure_filename
 from mutagen.easyid3 import EasyID3
 from boto.s3.key import Key
+from urlparse import urlparse
+import re
 
+# Main app and configuration
 app = Flask(__name__)
 app.config.from_pyfile('settings.py')
+
+# Database, cache and asset intialization
 db = SQLAlchemy(app)
 cache = Cache(app)
 assets = Environment(app)
-conn = boto.connect_s3(app.config['AWS_ACCESS_KEY_ID'], app.config['AWS_SECRET_ACCESS_KEY'])
-s3_bucket = conn.get_bucket(app.config['S3_BUCKET'])
-s3_key = Key(s3_bucket)
 
-# Jinja custom filters
+# S3 Set-up
+s3_url = urlparse(app.config['BUCKET_URL'])
+
+# urlparse wasn't giving me much, so this was a bit of a hack.
+netloc = re.findall(r'\w+', s3_url.netloc)
+
+conn = boto.connect_s3(netloc[0], netloc[1])
+
+# Another hack to get rid of the leading slash
+s3_bucket = conn.get_bucket(s3_url.path.replace('/', ''))
+
+
 def datetimef(value):
+    "Custom datetime filter for Jinja, so we can work with JS"
     value = value - datetime.timedelta(days=30)
     return value.strftime('%Y, %m, %d, %H, %M, %S')
 
 app.jinja_env.filters['jsdatetime'] = datetimef
 
+
 @app.context_processor
 def datetime_now():
     return dict(utcnow=datetime.datetime.utcnow())
 
-filename = "files/"
-dir = os.path.dirname(filename)
+# Set-up the temporary storage location, for uploading and ID3 tag reading
+file_dir = app.config['UPLOAD_FOLDER']
+dir = os.path.dirname(file_dir)
 
+# If the temp directory doesn't exist, make it
 if not os.path.exists(dir):
-    try: os.makedirs(dir)
-    except: pass
+    try:
+        os.makedirs(dir)
+    except:
+        pass
 
 assets.register('css',
                 'css/simple.css', 'css/extras.css',
@@ -47,8 +64,10 @@ assets.register('js',
                 'js/jquery.ui.widget.js', 'js/jquery.iframe-transport.js', 'js/jquery.fileupload.js', 'js/jquery.countdown.js',
                 'js/app.js', output='assetcache/cached.js', filters='jsmin')
 
+
 def get_time_delta():
     return datetime.datetime.utcnow() + datetime.timedelta(hours=10)
+
 
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True, index=True)
@@ -60,8 +79,10 @@ class Song(db.Model):
     filename = db.Column(db.String(255), index=True)
     downloads = db.Column(db.Integer, default=0, index=True)
 
+
 def set_session(short):
     session['human'] = short
+
 
 def save_file(data_file):
     filename = secure_filename(data_file.filename)
@@ -69,27 +90,34 @@ def save_file(data_file):
     data_file.save(mp3)
     return mp3, data_file.filename
 
+
 def get_tags(mp3):
     tags = EasyID3(mp3)
     return tags
 
+
 @cache.memoize(100000)
 def generate_s3(filename):
+    s3_key = Key(s3_bucket)
     s3_key.key = filename
     url = s3_key.generate_url(1300)
     return url
 
+
 def post_s3(mp3, filename):
     headers = {'Content-Disposition': 'attachment'}
+    s3_key = Key(s3_bucket)
     s3_key.key = filename
     s3_key.set_contents_from_filename(mp3, headers)
     url = s3_key.generate_url(1300)
     return url
 
+
 def get_url(id):
     short = short_url.encode_url(id)
     url = "http://%s/%s" % (app.config['PRETTY_SERVER_NAME'], short)
     return url
+
 
 @cache.memoize(100000)
 def lookup_song(short):
@@ -100,16 +128,19 @@ def lookup_song(short):
     song = Song.query.filter_by(id=id).first_or_404()
     return song
 
+
 @app.route('/')
 @cache.memoize(1000)
 def index():
-	return render_template('index.html')
+    return render_template('index.html')
+
 
 @app.route('/<short>')
 def song(short):
     song = lookup_song(short)
     set_session(short)
     return render_template('song.html', song=song, short=short)
+
 
 @app.route('/<short>/download')
 def download(short):
@@ -120,6 +151,7 @@ def download(short):
         return redirect('/%s' % short)
     url = generate_s3(song.filename)
     return redirect(url)
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -138,6 +170,7 @@ def upload():
         db.session.commit()
         url = get_url(song.id)
     return jsonify(artist=tags.get('artist'), name=tags.get('title'), url=url, error=error)
+
 
 @app.route('/favicon.ico')
 def favicon():
