@@ -1,7 +1,7 @@
 import boto
 import os
 import datetime
-from lib import short_url
+import lib.short_url as short_url
 from flask import Flask, request, redirect, session, render_template, abort, jsonify
 from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.cache import Cache
@@ -19,9 +19,8 @@ db = SQLAlchemy(app)
 cache = Cache(app)
 assets = Environment(app)
 
+# S3
 conn = boto.connect_s3(app.config['BUCKET_ACCESS_KEY'], app.config['BUCKET_SECRET_KEY'])
-
-# Another hack to get rid of the leading slash
 s3_bucket = conn.get_bucket(app.config['BUCKET_NAME'])
 
 
