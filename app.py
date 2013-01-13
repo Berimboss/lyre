@@ -1,7 +1,7 @@
 import boto
 import os
 import datetime
-import short_url
+from lib import short_url
 from flask import Flask, request, redirect, session, render_template, abort, jsonify
 from flaskext.sqlalchemy import SQLAlchemy
 from flaskext.cache import Cache
@@ -9,8 +9,6 @@ from flask.ext.assets import Environment
 from werkzeug import secure_filename
 from mutagen.easyid3 import EasyID3
 from boto.s3.key import Key
-from urlparse import urlparse
-import re
 
 # Main app and configuration
 app = Flask(__name__)
@@ -21,16 +19,10 @@ db = SQLAlchemy(app)
 cache = Cache(app)
 assets = Environment(app)
 
-# S3 Set-up
-s3_url = urlparse(app.config['BUCKET_URL'])
-
-# urlparse wasn't giving me much, so this was a bit of a hack.
-netloc = re.findall(r'\w+', s3_url.netloc)
-
-conn = boto.connect_s3(netloc[0], netloc[1])
+conn = boto.connect_s3(app.config['BUCKET_ACCESS_KEY'], app.config['BUCKET_SECRET_KEY'])
 
 # Another hack to get rid of the leading slash
-s3_bucket = conn.get_bucket(s3_url.path.replace('/', ''))
+s3_bucket = conn.get_bucket(app.config['BUCKET_NAME'])
 
 
 def datetimef(value):
