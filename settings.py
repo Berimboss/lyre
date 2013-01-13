@@ -1,12 +1,14 @@
 import os
 
 # environment variables
-PORT = int(os.environ.get("PORT", 5000))
-SECRET_KEY = str(os.environ.get("APP_SECRET_KEY"))
-DEBUG = str(os.environ.get("DEBUG"))
-SQLALCHEMY_DATABASE_URI = str(os.environ.get("DATABASE_URL"))
-CACHE_TYPE = str(os.environ.get("CACHE_TYPE"))
-BUCKET_URL = os.environ.get("BUCKET_URL")
+PORT = os.environ.get("PORT", 5000)
+SECRET_KEY = os.environ.get("APP_SECRET_KEY")
+DEBUG = os.environ.get("DEBUG")
+SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+CACHE_TYPE = os.environ.get("CACHE_TYPE")
+BUCKET_SECRET_KEY = os.environ.get("BUCKET_SECRET_KEY")
+BUCKET_ACCESS_KEY = os.environ.get("BUCKET_ACCESS_KEY")
+BUCKET_NAME = os.environ.get("BUCKET_ACCESS_KEY")
 UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER")
 ALLOWED_EXTENSIONS = os.environ.get("ALLOWED_EXTENSIONS")
 SERVER_NAME = os.environ.get("SERVER_NAME")
